@@ -1,0 +1,6 @@
+row_id,id_sistema,cedula_identidad,nombre,apellidos,direccion,telefono,privilegio
+1,140,607580274,leonardo,aguilar,cartago,84930285,usuario
+2,320,509480135,gabriela,azofeifa,alajuelita,90087234,usuario
+3,690,900890571,alberth,petrovsky,puriscal,78000123,usuario
+4,A56,304700140,antony,calderon vega,Pérez Zeledón,88779013,administrador
+5,B98,115678295,lucrecia,zeledón padilla,buenos aires,71461841,administrador
