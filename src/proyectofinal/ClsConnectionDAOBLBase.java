@@ -5,6 +5,7 @@
  */
 package proyectofinal;
 
+import java.security.interfaces.RSAKey;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -45,12 +46,54 @@ public class ClsConnectionDAOBLBase {
                         break;
                     }
                 }
-                //System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+" "+rs.getString(5)+" "+rs.getString(6));
             }    
         }
         catch (ClassNotFoundException | SQLException e) {
             System.out.println(e);
         }
         return null;
-    }        
+    }
+    public String QueryPrincipal(String principalid, String principalpassword){
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","testicash","testicash");
+            Statement st=con.createStatement();
+            String sql = "SELECT * FROM verificacion_usuario where idsistema = '"+principalid+"'";
+            System.out.println(sql);
+            ResultSet rs=st.executeQuery(sql);
+            while (rs.next()){
+                System.out.println(principalid+" "+rs.getString(2));
+                if (principalid.equals(rs.getString(2)) && principalpassword.equals(rs.getString(3)) && (rs.getString(4).equals("1"))) {
+                    JOptionPane.showMessageDialog(panel, "Bienvenido usuario: "+principalid, "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                    //System.out.println(PaginaPrincipal.flag_final);
+                    if (principalid.matches("[A-Za-z]{1}[0-9]{2}")){
+                        new PagAdministrador().setVisible(true);
+                    }
+                    else{
+                        if (principalpassword.matches("[0-9]{3}")){
+                            new PagUsuario().setVisible(true);
+                        }
+                    }
+                    break;
+                }
+                            
+                else{
+                    if (principalid.equals(rs.getString(2)) && principalpassword.equals(rs.getString(3)) && (rs.getString(4).equals("0"))) {
+                        JOptionPane.showMessageDialog(panel, "El usuario: "+principalid+" se encuentra actualmente inhabilitado \n Contacte al administrador para una revisión de su cuenta", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                    else{
+                        if (principalid.equals(rs.getString(2)) && !principalpassword.equals(rs.getString(3))) {
+                            JOptionPane.showMessageDialog(panel, "El usuario: "+principalid+" existe en nuestro sistema, pero \n la contraseña utilizada no coincide", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                    }
+                }
+            }    
+        }
+        catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

@@ -32,7 +32,7 @@ public class PagPrincipal extends javax.swing.JFrame {
     String lsnombreArchivoInicioSesion = "verificacion_usuario.txt";
     String lsnombreArchivoLOGInicioSesion = "log_ingreso.txt";
     
-    boolean flag_final = false;
+    public boolean flag_final = false;
     public final JPanel panel = new JPanel();
     
     public PagPrincipal() {
@@ -159,28 +159,15 @@ public class PagPrincipal extends javax.swing.JFrame {
 
     private void ingreso_sistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingreso_sistemaActionPerformed
 
-        String variable_usuario = numero_usuario.getText();
-        String contraseña_usuario = contrasena.getText();        
-        if (numero_usuario.getText().matches("[A-Za-z].*")){
-            //AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-            conexion_oracle_verificacion(variable_usuario,contraseña_usuario); 
-            if (flag_final == true){
-                new PagAdministrador().setVisible(true);
-                dispose();
-            }
+        ClsConnectionBL ConnectionBL = new ClsConnectionBL();
+        ConnectionBL.QueryPrincipal(numero_usuario.getText().toUpperCase(),contrasena.getText());
+        dispose();
+        System.out.println(flag_final + " " +numero_usuario.getText());
+        if (numero_usuario.getText().equals("")){
+            JOptionPane.showMessageDialog(panel, "Digite algún número de usuario correcto \n No olvide agregar la contraseña", "WARNING", JOptionPane.WARNING_MESSAGE);
         }
         else{
-            if (numero_usuario.getText().matches("[0-9].*")){
-                //new PagUsuario().setVisible(true);
-                conexion_oracle_verificacion(variable_usuario, contraseña_usuario);
-                if (flag_final == true){
-                    new PagUsuario().setVisible(true);
-                    dispose();
-                }
-            }
-            else{
-                conexion_oracle_verificacion(variable_usuario, contraseña_usuario);
-            }
+            //JOptionPane.showMessageDialog(panel, "El usuario: "+numero_usuario.getText()+" no existe en el sistema\n digite sus credenciales correctamente", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_ingreso_sistemaActionPerformed
     
